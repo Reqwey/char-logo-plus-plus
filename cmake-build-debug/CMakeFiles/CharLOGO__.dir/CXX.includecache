@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linhk/桌面/CharLOGO++/main.cpp
+cstdio
+-
+iostream
+-
+algorithm
+-
+cstring
+-
+

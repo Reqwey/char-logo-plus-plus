@@ -1,0 +1,3 @@
+/home/linhk/桌面/CharLOGO++/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/linhk/桌面/CharLOGO++/cmake-build-debug/CMakeFiles/CharLOGO__.dir
+/home/linhk/桌面/CharLOGO++/cmake-build-debug/CMakeFiles/edit_cache.dir
