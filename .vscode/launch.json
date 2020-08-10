@@ -1,0 +1,33 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "2,0.0", //配置文件的版本，以前使用是0.2.0，新版本已经弃用，改用为2.0.0
+    "configurations": [ //配置域
+        {
+            "preLaunchTask": "Build", //调试会话开始前执行的任务，一般为编译程序。与tasks.json的label相对应
+            "name": "(gdb) Launch", //配置文件的名字，可以随便起
+            "type": "cppdbg", //调试的类型，Vscode现在支持很多，我这里主要是C，所以只能是cppdbg
+            "request": "launch", //配置文件的请求类型，有launch和attach两种，具体看官方文档
+            "targetArchitecture": "x64", //硬件内核架构，为64bit，如图设置
+            "program": "${workspaceRoot}/${fileBasenameNoExtension}.exe", //可执行文件的路径和文件名称
+            "args": [
+                "file1",
+                "file2"
+            ], //主函数调用时传入的参数
+            "stopAtEntry": false, //设为true时程序将暂停在程序入口处
+            "cwd": "${workspaceFolder}", //调试时的工作目录
+            "environment": [], //不知道干嘛的
+            "internalConsoleOptions": "openOnSessionStart", //
+            "externalConsole": true, //调试时是否显示控制台窗口
+            "MIMode": "gdb", //指定连接的调试器，可以省略不写
+            "setupCommands": [ //不知道干嘛的
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+        }
+    ]
+}
