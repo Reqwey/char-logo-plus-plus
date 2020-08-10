@@ -87,7 +87,6 @@ void draw_char(int ii, int x, int y, bool bFirst)
 
 int main()
 {
-    system("ls");
     puts("CharLogo++ - A simple tool to generate character letter banners\n"
          "Usage: Input English characters(a to z, A to Z) for conversion. Type ! to quit");
     while (true)
