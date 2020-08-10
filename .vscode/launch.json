@@ -10,7 +10,7 @@
             "type": "cppdbg", //调试的类型，Vscode现在支持很多，我这里主要是C，所以只能是cppdbg
             "request": "launch", //配置文件的请求类型，有launch和attach两种，具体看官方文档
             "targetArchitecture": "x64", //硬件内核架构，为64bit，如图设置
-            "program": "${workspaceRoot}/${fileBasenameNoExtension}.exe", //可执行文件的路径和文件名称
+            "program": "${workspaceRoot}/${fileBasenameNoExtension}", //可执行文件的路径和文件名称
             "args": [
                 "file1",
                 "file2"
