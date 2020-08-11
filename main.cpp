@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cstring>
+#include <map>
 
 #define row(x) ques[x].row
 #define col(x) ques[x].col
@@ -16,7 +17,7 @@
 
 using namespace std;
 
-const int MAX_INPUT = 201, MAX_CANVAS = 1001, MAX_CHAR = 21, INF = 0x7ffffff;
+const int MAX_INPUT = 201, MAX_CANVAS = 1001, MAX_CHAR = 21, MAX_BLANK = 3,INF = 0x7ffffff;
 
 struct myChar
 {
@@ -69,7 +70,7 @@ bool init_char(int ii)
 int calc_dist(int ii, int jj)
 {
     int min_dist = INF;
-    for (int i = row(ii) - 1, j = row(jj) - 1; i >= 0 && j >= 0; i--, j--)
+    for (int i = 0, j = 0; i < row(ii) && j < row(jj); i++, j++)
         min_dist = min(min_dist, rlpr(ii)[i] + llpr(jj)[j]);
     return min_dist;
 }
@@ -88,16 +89,16 @@ void draw_char(int ii, int x, int y, bool bFirst)
 int main()
 {
     puts("CharLogo++ - A simple tool to generate character letter banners\n"
-         "Usage: Input English characters(a to z, A to Z) for conversion. Type ! to quit");
+         "Usage: Input English characters(a to z, A to Z) and numbers(0 to 9) for conversion. Type ! to quit");
     while (true)
     {
         bool exit = false, try_again = false;
         printf(">>>");
         memset(str, 0, sizeof(str));
-        scanf("%s", str);
+        cin.getline(str, MAX_INPUT - 2);
         for (int i = 0; i < strlen(str); i++)
         {
-            if (!isalpha(str[i]))
+            if (!isalpha(str[i]) && !isdigit(str[i]) && str[i] != ' ')
             {
                 if (str[i] == '!')
                 {
@@ -125,20 +126,41 @@ int main()
             memset(canvas, 0, sizeof(canvas));
             canvas_x = canvas_y = 0;
             for (int i = 0; i < strlen(str); i++)
-                if (init_char(i))
-                {
-                    file_error = true;
-                    break;
-                }
+                if (str[i] != ' ')
+                    if (init_char(i))
+                    {
+                        file_error = true;
+                        break;
+                    }
             if (file_error)
                 break;
-            draw_char(0, canvas_x - row(0), canvas_y, true);
+            if (str[0] != ' ')
+                draw_char(0, 0, canvas_y, true);
             for (int i = 1; i < strlen(str); i++)
             {
-                canvas_y += col(i - 1) - calc_dist(i - 1, i) - 1;
-                draw_char(i, canvas_x - row(i), canvas_y, false);
+                if (str[i] != ' ')
+                {
+                    if (str[i - 1] != ' ')
+                    {
+                        canvas_y += col(i - 1) - calc_dist(i - 1, i) - 1;
+                        draw_char(i, 0, canvas_y, false);
+                    }
+                    else
+                    {
+                        canvas_y += MAX_BLANK;
+                        draw_char(i, 0, canvas_y, true);
+                    }
+                }
+                else
+                {
+                    if (str[i - 1] != ' ')
+                        canvas_y += col(i - 1);
+                    else
+                        canvas_y += MAX_BLANK;
+                }
             }
-            canvas_y += col(strlen(str) - 1);
+            if (str[strlen(str) - 1] != ' ')
+                canvas_y += col(strlen(str) - 1);
             for (int i = 0; i < canvas_x; i++)
             {
                 for (int j = 0; j < canvas_y; j++)
