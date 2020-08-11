@@ -1,6 +1,6 @@
 /*
-*   @author Linhk1606
-*   @version 1.0.0 还没来得及写注释版
+*   @author Linhk1606 Linhk1606@outlook.com
+*   @version 1.0
 */
 
 #include <cstdio>
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-const int MAX_INPUT = 201, MAX_CANVAS = 1001, MAX_CHAR = 21, MAX_BLANK = 3,INF = 0x7ffffff;
+const int MAX_INPUT = 201, MAX_CANVAS = 1001, MAX_CHAR = 21, BLANK_SIZE = 3,INF = 0x7ffffff;
 
 struct myChar
 {
@@ -147,7 +147,7 @@ int main()
                     }
                     else
                     {
-                        canvas_y += MAX_BLANK;
+                        canvas_y += BLANK_SIZE;
                         draw_char(i, 0, canvas_y, true);
                     }
                 }
@@ -156,7 +156,7 @@ int main()
                     if (str[i - 1] != ' ')
                         canvas_y += col(i - 1);
                     else
-                        canvas_y += MAX_BLANK;
+                        canvas_y += BLANK_SIZE;
                 }
             }
             if (str[strlen(str) - 1] != ' ')
