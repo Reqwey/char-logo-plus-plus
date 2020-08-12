@@ -1,12 +1,13 @@
 /*
 *   @author Linhk1606 Linhk1606@outlook.com
-*   @version 1.0
+*   @version 1.1
 */
 
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
 #include <cstring>
+#include <string>
 #include <map>
 
 #define row(x) ques[x].row
@@ -30,15 +31,54 @@ char str[MAX_INPUT], canvas[MAX_CANVAS][MAX_CANVAS];
 
 int canvas_x, canvas_y;
 
+map<char, string> find_file;
+
+inline bool is_normal_char(char c)
+{
+    return (isalpha(c) || isdigit(c));
+}
+
+void init_map()
+{
+    string tmp_A, tmp_a, tmp_num;
+    for (int i = 0; i < 26; i++) // 大小写字母
+    {
+        tmp_A.push_back('A' + i), tmp_a.push_back('a' + i); // char 转 string
+        find_file[tmp_A[0]] = tmp_A;
+        find_file[tmp_a[0]] = tmp_a;
+        tmp_A.pop_back(), tmp_a.pop_back();
+    }
+    for (int i = 0; i <= 9; i++) // 数字
+    {
+        tmp_num.push_back('0' + i); // char 转 string
+        find_file[tmp_num[0]] = tmp_num;
+        tmp_num.pop_back();
+    }
+    find_file['!'] = "exclamation";
+    find_file['?'] = "question";
+    find_file[':'] = "colon";
+    find_file[';'] = "semicolon";
+    find_file[','] = "comma";
+    find_file['.'] = "period";
+    find_file['@'] = "at";
+    find_file['#'] = "num";
+    find_file['$'] = "dollar";
+    find_file['%'] = "percent";
+    find_file['^'] = "up";
+    find_file['&'] = "and";
+    find_file['|'] = "or";
+    find_file['*'] = "star";
+}
+
 bool init_char(int ii)
 {
     FILE *fp = NULL;
     char file_path[MAX_INPUT];
-    sprintf(file_path, "./ascii/%c.log", str[ii]);
+    sprintf(file_path, "./ascii/%s.log", find_file[str[ii]].c_str());
     // system(file_path);
     if ((fp = fopen(file_path, "r")) == NULL)
     {
-        puts("Open filename fail...");
+        printf("Open filename fail...Command is %s", file_path);
         return 1;
     }
 
@@ -88,33 +128,26 @@ void draw_char(int ii, int x, int y, bool bFirst)
 
 int main()
 {
+    init_map();
     puts("CharLogo++ - A simple tool to generate character letter banners\n"
-         "Usage: Input English characters(a to z, A to Z) and numbers(0 to 9) for conversion. Type ! to quit");
+         "Usage: Input characters for conversion. Type ! to quit");
     while (true)
     {
-        bool exit = false, try_again = false;
+        bool try_again = false;
         printf(">>>");
         memset(str, 0, sizeof(str));
         cin.getline(str, MAX_INPUT - 2);
+        if (strlen(str) == 1 && str[0] == '!')
+            break;
         for (int i = 0; i < strlen(str); i++)
         {
-            if (!isalpha(str[i]) && !isdigit(str[i]) && str[i] != ' ')
+            if (find_file.find(str[i]) == find_file.end() && str[i] != ' ')
             {
-                if (str[i] == '!')
-                {
-                    exit = true;
-                    break;
-                }
-                else
-                {
-                    try_again = true;
-                    break;
-                }
+                try_again = true;
+                break;
             }
         }
-        if (exit)
-            break;
-        else if (try_again)
+        if (try_again)
         {
             puts("Invalid characters");
             continue;
@@ -142,8 +175,17 @@ int main()
                 {
                     if (str[i - 1] != ' ')
                     {
-                        canvas_y += col(i - 1) - calc_dist(i - 1, i) - 1;
-                        draw_char(i, 0, canvas_y, false);
+                        bool flag_i_1 = is_normal_char(str[i - 1]), flag_i = is_normal_char(str[i]);
+                        if (flag_i_1 && flag_i) // 前后都是字母/数字
+                        {
+                            canvas_y += col(i - 1) - calc_dist(i - 1, i) - 1;
+                            draw_char(i, 0, canvas_y, false);
+                        }
+                        else
+                        {
+                            canvas_y += col(i - 1);
+                            draw_char(i, 0, canvas_y, true); // 不想和其它字符粘在一块～
+                        }
                     }
                     else
                     {
